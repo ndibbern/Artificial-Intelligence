@@ -24,7 +24,7 @@ Maze elements are indexed starting at (0, 0) [top left of maze]. E.g.,
 2 X...X
 3 X*..X
 4 XXXXX
- 
+
 === States ===
 Representing the position of the agent, as tuples in which:
 (x, y) = (col, row)
@@ -43,23 +43,33 @@ For example, if an agent is at state (1, 1), and can only move right and down,
 then the transitions for that s = (1, 1) would be:
 [("R", (2, 1)), ("D", (1, 2))]
 '''
+import re
+import numpy as np
+
 class MazeProblem:
-    
+
     # MazeProblem Constructor:
     # Constructs a new pathfinding problem from a maze, described above
     def __init__(self, maze):
         self.maze = maze
-        self.initial = None
-        self.goals = []
-        
-        # TODO: Populate initial and goals attributes
-    
+        self.initial = findPosition('*')[0]
+        self.goals = findPosition('G')
+
+    def findPosition(self, char):
+        result = []
+        for i in range(len(self.maze)):
+            for j in range(len(self.maze[i])):
+                if maze[i][j] == char:
+                    result.append((i, j))
+        return result
+
+
     # goalTest is parameterized by a state, and
     # returns True if the given state is a goal, False otherwise
     def goalTest(self, state):
         # TODO: Implement as intended
         return False
-    
+
     # transitions returns a list of tuples in the format:
     # [(action1, result(action1, s), ...]
     # corresponding to allowable actions of the given state, as well
@@ -67,7 +77,7 @@ class MazeProblem:
     def transitions(self, state):
         # TODO: Implement as intended
         return []
-    
+
     # solnTest will return a tuple of the format (cost, isSoln) where:
     # cost = the total cost of the solution,
     # isSoln = true if the given sequence of actions of the format:
@@ -81,4 +91,3 @@ class MazeProblem:
             if self.maze[s[1]][s[0]] == "X":
                 return (-1, False)
         return (len(soln), self.goalTest(s))
-    
