@@ -1,3 +1,8 @@
+"""
+Natalia Dibbern
+Juan Neri
+"""
+
 from MazeProblem import MazeProblem
 from SearchTreeNode import SearchTreeNode
 import unittest
