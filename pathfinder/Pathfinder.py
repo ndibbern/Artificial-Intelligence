@@ -44,6 +44,23 @@ class PathfinderTests(unittest.TestCase):
         self.assertTrue(soln_test[1])
         self.assertEqual(soln_test[0], 4)
 
+    def test_maze3(self):
+        maze = ["XXXXXXXXXXXX",\
+                "XG.......XGX",\
+                "X...XXX..X.X",\
+                "X...XGX..X.X",\
+                "X...XXX..X.X",\
+                "X.......XX.X",\
+                "X..........X",\
+                "X......XXXXX",\
+                "X.........*X",\
+                "XXXXXXXXXXXX"]
+        problem = MazeProblem(maze)
+        soln = Pathfinder.solve(problem)
+        soln_test = problem.soln_test(soln)
+        self.assertTrue(soln_test[1])
+        self.assertEqual(soln_test[0], 15)
+
     # TODO: Add more unit tests!
 
 if __name__ == '__main__':
