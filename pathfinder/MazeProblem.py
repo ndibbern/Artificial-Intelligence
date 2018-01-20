@@ -50,8 +50,6 @@ import numpy as np
 
 class MazeProblem:
 
-    # MazeProblem Constructor:
-    # Constructs a new pathfinding problem from a maze, described above
     def __init__(self, maze):
         self.actions = {"U":(0, -1) , "D":(0, 1), "L":(-1, 0), "R":(1, 0)}
         self.maze = maze
@@ -66,16 +64,10 @@ class MazeProblem:
                     result.add((col, row))
         return result
 
-
-    # goalTest is parameterized by a state, and
-    # returns True if the given state is a goal, False otherwise
-    def goalTest(self, state):
+    def goal_test(self, state):
         return state in self.goals
 
-    # transitions returns a list of tuples in the format:
-    # [(action1, result(action1, s), ...]
-    # corresponding to allowable actions of the given state, as well
-    # as the next state the action leads to
+    # [('R', (3, 4)), ('L', (2, 3))]
     def transitions(self, state):
         x, y = state
         transitions = []
@@ -89,7 +81,7 @@ class MazeProblem:
     def valid(self, state):
         x, y = state
         try:
-            return self.maze[x][y] != 'X'
+            return self.maze[y][x] != 'X'
         except:
             return False
 
@@ -98,22 +90,22 @@ class MazeProblem:
     # isSoln = true if the given sequence of actions of the format:
     # [a1, a2, ...] successfully navigates to a goal state from the initial state
     # If NOT a solution, return a cost of -1
-    def solnTest(self, soln):
+    def soln_test(self, soln):
         trans = {"U": (0, -1), "D": (0, 1), "L": (-1, 0), "R": (1, 0)}
         s = self.initial
         for m in soln:
             s = (s[0] + trans[m][0], s[1] + trans[m][1])
             if self.maze[s[1]][s[0]] == "X":
                 return (-1, False)
-        return (len(soln), self.goalTest(s))
+        return (len(soln), self.goal_test(s))
 
 if __name__ == '__main__':
     problem = MazeProblem(\
         [ "XXXXX"\
-        , "X..GX"\
-        , "XG..X"\
+        , "XG.GX"\
+        , "XX..X"\
         , "X*..X"\
         , "XXXXX" ])
-    print(problem.goals)
-    print(problem.initial)
-    print(problem.transitions((3,3)))
+    print("Initial: ", problem.initial)
+    print("Goal: ", problem.goals)
+    print(problem.transitions((1,3)))
