@@ -18,12 +18,13 @@ All valid mazes have:
 
 Maze elements are indexed starting at (0, 0) [top left of maze]. E.g.,
 ["XXXXX", "X..GX", "X...X", "X*..X", "XXXXX"] is interpretable as:
-  01234
+  01234 first
 0 XXXXX
 1 X..GX
 2 X...X
 3 X*..X
 4 XXXXX
+last
 
 === States ===
 Representing the position of the agent, as tuples in which:
@@ -42,6 +43,7 @@ of the format:
 For example, if an agent is at state (1, 1), and can only move right and down,
 then the transitions for that s = (1, 1) would be:
 [("R", (2, 1)), ("D", (1, 2))]
+
 '''
 import re
 import numpy as np
@@ -51,34 +53,45 @@ class MazeProblem:
     # MazeProblem Constructor:
     # Constructs a new pathfinding problem from a maze, described above
     def __init__(self, maze):
+        self.actions = {"U":(0, -1) , "D":(0, 1), "L":(-1, 0), "R":(1, 0)}
         self.maze = maze
-        self.initial = findPosition('*')[0]
-        self.goals = findPosition('G')
+        self.initial = self.where('*').pop()
+        self.goals = self.where('G')
 
-    def findPosition(self, char):
-        result = []
-        for i in range(len(self.maze)):
-            for j in range(len(self.maze[i])):
-                if maze[i][j] == char:
-                    result.append((i, j))
+    def where(self, char):
+        result = set()
+        for row in range(len(self.maze)):
+            for col in range(len(self.maze[row])):
+                if self.maze[row][col] == char:
+                    result.add((col, row))
         return result
 
 
     # goalTest is parameterized by a state, and
     # returns True if the given state is a goal, False otherwise
     def goalTest(self, state):
-        for goal in self.goals:
-            if goal == state:
-                return True
-        return False
+        return state in self.goals
 
     # transitions returns a list of tuples in the format:
     # [(action1, result(action1, s), ...]
     # corresponding to allowable actions of the given state, as well
     # as the next state the action leads to
     def transitions(self, state):
-        # TODO: Implement as intended
-        return []
+        x, y = state
+        transitions = []
+        for action, delta in self.actions.items():
+            dx, dy = delta
+            result = (x+dx, y+dy)
+            if self.valid(result):
+                transitions.append((action, result))
+        return transitions
+
+    def valid(self, state):
+        x, y = state
+        try:
+            return self.maze[x][y] != 'X'
+        except:
+            return False
 
     # solnTest will return a tuple of the format (cost, isSoln) where:
     # cost = the total cost of the solution,
@@ -93,3 +106,14 @@ class MazeProblem:
             if self.maze[s[1]][s[0]] == "X":
                 return (-1, False)
         return (len(soln), self.goalTest(s))
+
+if __name__ == '__main__':
+    problem = MazeProblem(\
+        [ "XXXXX"\
+        , "X..GX"\
+        , "XG..X"\
+        , "X*..X"\
+        , "XXXXX" ])
+    print(problem.goals)
+    print(problem.initial)
+    print(problem.transitions((3,3)))
