@@ -111,6 +111,7 @@ class MazeProblem:
             if self.valid(result):
                 transitions.append((action, self.cost(result), result))
         return transitions
+
     # cost returns the cost of moving onto the given state, and employs
     # the MazeProblem's costMap
     def cost(self, state):
