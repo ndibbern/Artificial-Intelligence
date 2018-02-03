@@ -85,8 +85,8 @@ class MazeProblem:
     # provides the cell-distance to the nearest goal state
     def heuristic(self, state):
         min_distance = math.inf
-        for goal in goals:
-            min_distance = min(min_distance, manhattan_distance(state, goal))
+        for goal in self.goals:
+            min_distance = min(min_distance, MazeProblem.manhattan_distance(state, goal))
 
         return min_distance
 
@@ -105,7 +105,7 @@ class MazeProblem:
     def transitions(self, state):
         x, y = state
         transitions = []
-        for action, delta in actions.items():
+        for action, delta in MazeProblem.actions.items():
             dx, dy = delta
             result = (x+dx, y+dy)
             if self.valid(result):

@@ -37,9 +37,9 @@ class SearchTreeNode:
         self.heuristicCost = heuristicCost
 
     def __lt__(self, other):
-        return (self.totalCost + self.heuristicCost) >\
-                - (other.totalCost + other.heuristicCost) == 0
+        return (self.totalCost + self.heuristicCost) \
+                < (other.totalCost + other.heuristicCost)
 
     def __eq__(self, other):
-        return (self.totalCost + self.heuristicCost) >\
-                - (other.totalCost + other.heuristicCost) == 0
+        return (self.totalCost + self.heuristicCost) \
+                == (other.totalCost + other.heuristicCost)
