@@ -90,6 +90,14 @@ class MazeProblem:
 
         return min_distance
 
+    # Returns true if a state is not a wall
+    def valid(self, state):
+        x, y = state
+        try:
+            return self.maze[y][x] != 'X'
+        except:
+            return False
+
     # transitions returns a list of tuples in the format:
     # [(action1, cost_of_action1, result(action1, s), ...]
     # corresponding to allowable actions of the given state, as well
@@ -97,11 +105,11 @@ class MazeProblem:
     def transitions(self, state):
         x, y = state
         transitions = []
-        for action, delta in self.actions.items():
+        for action, delta in actions.items():
             dx, dy = delta
             result = (x+dx, y+dy)
             if self.valid(result):
-                transitions.append((action, result))
+                transitions.append((action, self.cost(result), result))
         return transitions
     # cost returns the cost of moving onto the given state, and employs
     # the MazeProblem's costMap
