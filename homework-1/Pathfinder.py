@@ -90,6 +90,23 @@ class PathfinderTests(unittest.TestCase):
         soln = Pathfinder.solve(problem)
         self.assertFalse(soln)
 
+    def test_maze5(self):
+        maze = ["XXXXXXXXXXXX",\
+                "XG.......XGX",\
+                "X...XXX..X.X",\
+                "X...XGX..X.X",\
+                "X...XXX..X.X",\
+                "X.......XX.X",\
+                "X..........X",\
+                "X......XXXXX",\
+                "X.........*X",\
+                "XXXXXXXXXXXX"]
+        problem = MazeProblem(maze)
+        soln = Pathfinder.solve(problem)
+        soln_test = problem.solnTest(soln)
+        self.assertTrue(soln_test[1])
+        self.assertEqual(soln_test[0], 15)
+
 
 if __name__ == '__main__':
     unittest.main()
