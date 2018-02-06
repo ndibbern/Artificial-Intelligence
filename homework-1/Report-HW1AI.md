@@ -1,0 +1,4 @@
+# Report- HW 1 AI:
+
+* For the open list (nodes that still need to be visited) I chose to use a priority queue as we discussedin class because it will prioritize to explore the node with the less cost each time we expand a node. For the closed list I chose a set in python, because the only purpose of it is to check weather I explored it or not. In python it is really easy to add to a set and it is also very easy to look up to see if a certain state is in the set or not. Furthermore the cheking if the state is in the set has $O(1)$ runtime.
+* The BFS approach generated 1026153 nodes while the A* aproach generated only 126 nodes.
