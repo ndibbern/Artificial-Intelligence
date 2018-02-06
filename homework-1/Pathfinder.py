@@ -26,7 +26,8 @@ class Pathfinder:
     def solve(problem):
         # Setup
         frontier = []
-        explored = []
+        explored = set()
+        node_counter = 0
         initial_heuristic_cost = problem.heuristic(problem.initial)
 
         # Search
@@ -36,12 +37,13 @@ class Pathfinder:
             # Get front of queue
             expanding = heapq.heappop(frontier)
             if expanding.state not in explored:
-                explored.append(expanding.state)
+                explored.add(expanding.state)
             else:
                 continue
 
             # Test for goal state
             if problem.goalTest(expanding.state):
+                print(node_counter)
                 return Pathfinder.getSolution(expanding)
 
             # Generate new nodes on frontier
@@ -54,6 +56,7 @@ class Pathfinder:
                                             expanding.totalCost + cost, \
                                             problem.heuristic(final_state))
                 heapq.heappush(frontier, child_node)
+                node_counter += 1
 
         # No solutions found
         return None
