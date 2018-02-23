@@ -1,4 +1,5 @@
 '''
+Natalia Dibbern
 MazeClause.py
 
 Specifies a Propositional Logic Clause formatted specifically
