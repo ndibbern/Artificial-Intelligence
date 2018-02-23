@@ -14,28 +14,26 @@ class MazeClause:
         self.props = {}
         self.valid = False
 
-        for (MazeProposition, NegationStatus) in m:
-            if MazeProposition in props:
-                if NegationStatus != props[MazeProposition]:
-                    del props[MazeProposition]
+        for (MazeProposition, NegationStatus) in props:
+            if MazeProposition in self.props:
+                if NegationStatus != self.props[MazeProposition]:
+                    del self.props[MazeProposition]
                     self.valid = True
             else:
-                props[MazeProposition] = NegationStatus
+                self.props[MazeProposition] = NegationStatus
 
     def getProp (self, prop):
-        # TODO: This is currently implemented incorrectly; see
-        # spec for details!
-        return False
+        if prop in self.props:
+            if self.props[prop]:
+                return True
+            return False
+        return None
 
     def isValid (self):
-        # TODO: This is currently implemented incorrectly; see
-        # spec for details!
-        return False
+        return self.valid
 
     def isEmpty (self):
-        # TODO: This is currently implemented incorrectly; see
-        # spec for details!
-        return False
+        return bool(self.props)
 
     def __eq__ (self, other):
         return self.props == other.props and self.valid == other.valid
