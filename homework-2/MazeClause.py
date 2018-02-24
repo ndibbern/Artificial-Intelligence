@@ -23,17 +23,16 @@ class MazeClause:
                 self.props[mazeProposition] = negationStatus
 
     def getProp(self, prop):
-        if prop in self.props:
-            if self.props[prop]:
-                return True
-            return False
-        return None
+        try:
+            return self.props[prop]
+        except KeyError:
+            return None
 
     def isValid(self):
         return self.valid
 
     def isEmpty(self):
-        return not bool(self.props)
+        return not any(self.props)
 
     def __eq__(self, other):
         return self.props == other.props and self.valid == other.valid
@@ -51,11 +50,12 @@ class MazeClause:
 
     @staticmethod
     def resolve(c1, c2):
-        results = set()
-        if c1.isEmpty() or c2.isEmpty() or c1.isValid() or c2.isValid():
-            return results
+        resolutions = set()
+        if any((c1.isEmpty(), c2.isEmpty(), c1.isValid(), c2.isValid())):
+            return resolutions
 
         merged_dictionary = {**c1.props, **c2.props}
+        print(merged_dictionary)
         resolution_created = False
 
         for mazeProposition, negationStatus in c1.props.items():
@@ -64,10 +64,9 @@ class MazeClause:
                 resolution_created = True
 
         if resolution_created:
-            results.add(MazeClause(merged_dictionary.items()))
-            return results
+            resolutions.add(MazeClause(merged_dictionary.items()))
 
-        return results
+        return resolutions
 
 
 class MazeClauseTests(unittest.TestCase):
