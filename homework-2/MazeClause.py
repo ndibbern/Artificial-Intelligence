@@ -11,10 +11,9 @@ import unittest
 
 class MazeClause:
 
-    def __init__ (self, props):
+    def __init__(self, props):
         self.props = {}
         self.valid = False
-
         for (MazeProposition, NegationStatus) in props:
             if MazeProposition in self.props:
                 if NegationStatus != self.props[MazeProposition]:
@@ -23,23 +22,23 @@ class MazeClause:
             else:
                 self.props[MazeProposition] = NegationStatus
 
-    def getProp (self, prop):
+    def getProp(self, prop):
         if prop in self.props:
             if self.props[prop]:
                 return True
             return False
         return None
 
-    def isValid (self):
+    def isValid(self):
         return self.valid
 
-    def isEmpty (self):
+    def isEmpty(self):
         return not bool(self.props)
 
-    def __eq__ (self, other):
+    def __eq__(self, other):
         return self.props == other.props and self.valid == other.valid
 
-    def __hash__ (self):
+    def __hash__(self):
         # Hashes an immutable set of the stored props for ease of
         # lookup in a set
         return hash(frozenset(self.props.items()))
@@ -51,11 +50,25 @@ class MazeClause:
     #     return ""
 
     @staticmethod
-    def resolve (c1, c2):
+    def resolve(c1, c2):
+        if c1.isEmpty() or c2.isEmpty() or c1.isValid() or c2.isValid():
+            return set()
+
         results = set()
-        # TODO: This is currently implemented incorrectly; see
-        # spec for details!
-        return results
+        merged_dictionary = {**c1.props, **c2.props}
+        proposition_created = False
+        for MazeProposition, NegationStatus in c1.props.items():
+            if (c2.getProp(MazeProposition) and not NegationStatus) or (c2.getProp(MazeProposition) == False and NegationStatus):
+                del merged_dictionary[MazeProposition]
+                proposition_created = True
+
+        if proposition_created:
+            maze_clause_list = merged_dictionary.items()
+            print(maze_clause_list)
+            results.add(MazeClause(maze_clause_list))
+            return results
+
+        return set()
 
 
 class MazeClauseTests(unittest.TestCase):
@@ -83,26 +96,26 @@ class MazeClauseTests(unittest.TestCase):
         self.assertFalse(mc.isValid())
         self.assertTrue(mc.isEmpty())
 
-    # def test_mazeprops5(self):
-    #     mc1 = MazeClause([(("X", (1, 1)), True)])
-    #     mc2 = MazeClause([(("X", (1, 1)), True)])
-    #     res = MazeClause.resolve(mc1, mc2)
-    #     self.assertEqual(len(res), 0)
-    #
-    # def test_mazeprops6(self):
-    #     mc1 = MazeClause([(("X", (1, 1)), True)])
-    #     mc2 = MazeClause([(("X", (1, 1)), False)])
-    #     res = MazeClause.resolve(mc1, mc2)
-    #     self.assertEqual(len(res), 1)
-    #     self.assertTrue(MazeClause([]) in res)
-    #
-    # def test_mazeprops7(self):
-    #     mc1 = MazeClause([(("X", (1, 1)), True), (("Y", (1, 1)), True)])
-    #     mc2 = MazeClause([(("X", (1, 1)), False), (("Y", (2, 2)), True)])
-    #     res = MazeClause.resolve(mc1, mc2)
-    #     self.assertEqual(len(res), 1)
-    #     self.assertTrue(MazeClause([(("Y", (1, 1)), True), (("Y", (2, 2)), True)]) in res)
-    #
+    def test_mazeprops5(self):
+        mc1 = MazeClause([(("X", (1, 1)), True)])
+        mc2 = MazeClause([(("X", (1, 1)), True)])
+        res = MazeClause.resolve(mc1, mc2)
+        self.assertEqual(len(res), 0)
+
+    def test_mazeprops6(self):
+        mc1 = MazeClause([(("X", (1, 1)), True)])
+        mc2 = MazeClause([(("X", (1, 1)), False)])
+        res = MazeClause.resolve(mc1, mc2)
+        self.assertEqual(len(res), 1)
+        self.assertTrue(MazeClause([]) in res)
+
+    def test_mazeprops7(self):
+        mc1 = MazeClause([(("X", (1, 1)), True), (("Y", (1, 1)), True)])
+        mc2 = MazeClause([(("X", (1, 1)), False), (("Y", (2, 2)), True)])
+        res = MazeClause.resolve(mc1, mc2)
+        self.assertEqual(len(res), 1)
+        self.assertTrue(MazeClause([(("Y", (1, 1)), True), (("Y", (2, 2)), True)]) in res)
+
     # def test_mazeprops8(self):
     #     mc1 = MazeClause([(("X", (1, 1)), True), (("Y", (1, 1)), False)])
     #     mc2 = MazeClause([(("X", (1, 1)), False), (("Y", (1, 1)), True)])
@@ -114,7 +127,7 @@ class MazeClauseTests(unittest.TestCase):
     #     mc2 = MazeClause([(("X", (1, 1)), False), (("Y", (1, 1)), True), (("W", (1, 1)), False)])
     #     res = MazeClause.resolve(mc1, mc2)
     #     self.assertEqual(len(res), 0)
-    #
+
     # def test_mazeprops10(self):
     #     mc1 = MazeClause([(("X", (1, 1)), True), (("Y", (1, 1)), False), (("Z", (1, 1)), True)])
     #     mc2 = MazeClause([(("X", (1, 1)), False), (("Y", (1, 1)), False), (("W", (1, 1)), False)])
