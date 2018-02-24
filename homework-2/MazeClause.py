@@ -14,13 +14,13 @@ class MazeClause:
     def __init__(self, props):
         self.props = {}
         self.valid = False
-        for (MazeProposition, NegationStatus) in props:
-            if MazeProposition in self.props:
-                if NegationStatus != self.props[MazeProposition]:
-                    del self.props[MazeProposition]
+        for (mazeProposition, negationStatus) in props:
+            if mazeProposition in self.props:
+                if negationStatus != self.props[mazeProposition]:
+                    del self.props[mazeProposition]
                     self.valid = True
             else:
-                self.props[MazeProposition] = NegationStatus
+                self.props[mazeProposition] = negationStatus
 
     def getProp(self, prop):
         if prop in self.props:
@@ -51,24 +51,23 @@ class MazeClause:
 
     @staticmethod
     def resolve(c1, c2):
-        if c1.isEmpty() or c2.isEmpty() or c1.isValid() or c2.isValid():
-            return set()
-
         results = set()
-        merged_dictionary = {**c1.props, **c2.props}
-        proposition_created = False
-        for MazeProposition, NegationStatus in c1.props.items():
-            if (c2.getProp(MazeProposition) and not NegationStatus) or (c2.getProp(MazeProposition) == False and NegationStatus):
-                del merged_dictionary[MazeProposition]
-                proposition_created = True
-
-        if proposition_created:
-            maze_clause_list = merged_dictionary.items()
-            print(maze_clause_list)
-            results.add(MazeClause(maze_clause_list))
+        if c1.isEmpty() or c2.isEmpty() or c1.isValid() or c2.isValid():
             return results
 
-        return set()
+        merged_dictionary = {**c1.props, **c2.props}
+        resolution_created = False
+
+        for mazeProposition, negationStatus in c1.props.items():
+            if c2.getProp(mazeProposition) == True and not negationStatus or c2.getProp(mazeProposition) == False and negationStatus:
+                del merged_dictionary[mazeProposition]
+                resolution_created = True
+
+        if resolution_created:
+            results.add(MazeClause(merged_dictionary.items()))
+            return results
+
+        return results
 
 
 class MazeClauseTests(unittest.TestCase):
