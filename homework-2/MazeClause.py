@@ -50,13 +50,13 @@ class MazeClause:
         return str(self.props) + str(self.isValid())
 
     @staticmethod
-    def _remove_complementary_prop(a):
-        for proposition in a:
+    def _remove_complementary_prop(proposition_set):
+        for proposition in proposition_set:
             (mazeProposition, negationStatus) = proposition
             complement = (mazeProposition, not negationStatus)
-            if complement in a:
-                return a - {proposition, complement}
-        return a
+            if complement in proposition_set:
+                return proposition_set - {proposition, complement}
+        return proposition_set
 
     @staticmethod
     def resolve(c1, c2):
@@ -67,7 +67,6 @@ class MazeClause:
         merged = set(c1.props.items())
         merged.update(c2.props.items())
         resolution = MazeClause._remove_complementary_prop(merged)
-        print(MazeClause(list(resolution)))
         new_MazeClause = MazeClause(list(resolution))
         return {new_MazeClause} if any(merged - resolution) and  not new_MazeClause.isValid() else set()
 
