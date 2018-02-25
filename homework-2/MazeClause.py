@@ -46,8 +46,8 @@ class MazeClause:
     # Hint: Specify a __str__ method for ease of debugging (this
     # will allow you to "print" a MazeClause directly to inspect
     # its composite literals)
-    # def __str__ (self):
-    #     return ""
+    def __str__ (self):
+        return str(self.props) + str(self.isValid())
 
     @staticmethod
     def _remove_complementary_prop(a):
@@ -67,8 +67,9 @@ class MazeClause:
         merged = set(c1.props.items())
         merged.update(c2.props.items())
         resolution = MazeClause._remove_complementary_prop(merged)
-        print(resolution)
-        return {MazeClause(list(resolution))} if any(merged - resolution) else set()
+        print(MazeClause(list(resolution)))
+        new_MazeClause = MazeClause(list(resolution))
+        return {new_MazeClause} if any(merged - resolution) and  not new_MazeClause.isValid() else set()
 
 
 
@@ -117,17 +118,17 @@ class MazeClauseTests(unittest.TestCase):
         self.assertEqual(len(res), 1)
         self.assertTrue(MazeClause([(("Y", (1, 1)), True), (("Y", (2, 2)), True)]) in res)
 
-    # def test_mazeprops8(self):
-    #     mc1 = MazeClause([(("X", (1, 1)), True), (("Y", (1, 1)), False)])
-    #     mc2 = MazeClause([(("X", (1, 1)), False), (("Y", (1, 1)), True)])
-    #     res = MazeClause.resolve(mc1, mc2)
-    #     self.assertEqual(len(res), 0)
+    def test_mazeprops8(self):
+        mc1 = MazeClause([(("X", (1, 1)), True), (("Y", (1, 1)), False)])
+        mc2 = MazeClause([(("X", (1, 1)), False), (("Y", (1, 1)), True)])
+        res = MazeClause.resolve(mc1, mc2)
+        self.assertEqual(len(res), 0)
 
-    # def test_mazeprops9(self):
-    #     mc1 = MazeClause([(("X", (1, 1)), True), (("Y", (1, 1)), False), (("Z", (1, 1)), True)])
-    #     mc2 = MazeClause([(("X", (1, 1)), False), (("Y", (1, 1)), True), (("W", (1, 1)), False)])
-    #     res = MazeClause.resolve(mc1, mc2)
-    #     self.assertEqual(len(res), 0) # changed from 0 to 1
+    def test_mazeprops9(self):
+        mc1 = MazeClause([(("X", (1, 1)), True), (("Y", (1, 1)), False), (("Z", (1, 1)), True)])
+        mc2 = MazeClause([(("X", (1, 1)), False), (("Y", (1, 1)), True), (("W", (1, 1)), False)])
+        res = MazeClause.resolve(mc1, mc2)
+        self.assertEqual(len(res), 0) # changed from 0 to 1
 
     def test_mazeprops10(self):
         mc1 = MazeClause([(("X", (1, 1)), True), (("Y", (1, 1)), False), (("Z", (1, 1)), True)])
