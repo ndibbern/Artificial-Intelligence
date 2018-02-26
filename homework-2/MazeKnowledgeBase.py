@@ -27,12 +27,9 @@ class MazeKnowledgeBase:
         query_clauses = list(set(query.props.items()))
         for mazeProposition, negationStatus in query_clauses:
             clauses_copy.add(MazeClause([(mazeProposition, not negationStatus)]))
-        for i in clauses_copy:
-            print(i)
-        print('-----------------------')
+
         new = set()
         while(True):
-            print('new set!')
             pairs_iterator = combinations(clauses_copy, 2)
             for ci, cj in pairs_iterator:
                 resolvents = MazeClause.resolve(ci, cj)
