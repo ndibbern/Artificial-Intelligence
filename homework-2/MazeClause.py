@@ -47,7 +47,7 @@ class MazeClause:
     # will allow you to "print" a MazeClause directly to inspect
     # its composite literals)
     def __str__ (self):
-        return str(self.props) + str(self.isValid())
+        return str(self.props)
 
     @staticmethod
     def _remove_complementary_prop(proposition_set):

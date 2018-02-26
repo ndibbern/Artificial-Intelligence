@@ -23,37 +23,26 @@ class MazeKnowledgeBase:
 
     # [!] Queries are always MazeClauses
     def ask(self, query):
-
+        clauses_copy = self.clauses.copy()
         query_clauses = list(set(query.props.items()))
         for mazeProposition, negationStatus in query_clauses:
-            self.clauses.add(MazeClause([(mazeProposition, not negationStatus)]))
-        for i in self.clauses:
+            clauses_copy.add(MazeClause([(mazeProposition, not negationStatus)]))
+        for i in clauses_copy:
             print(i)
         print('-----------------------')
         new = set()
         while(True):
-            pairs_iterator = combinations(self.clauses, 2)
+            print('new set!')
+            pairs_iterator = combinations(clauses_copy, 2)
             for ci, cj in pairs_iterator:
                 resolvents = MazeClause.resolve(ci, cj)
-                # print('C1:')
-                # print(ci)
-                # print('C2:')
-                # print(cj)
-                # print("Resolvents:")
-                # if not any(resolvents): print('resolvents is empty')
-                # for i in resolvents:
-                    # print(i)
                 if MazeClause([]) in resolvents:
                     return True
                 new = new.union(resolvents)
-                # print("Printing new")
-                # for i in new:
-                #     print(i)
-            if new.issubset(self.clauses): return False
-            self.clauses = self.clauses.union(new)
-            # print("Union of clauses")
-            # for i in self.clauses:
-            #     print(i)
+
+            if new.issubset(clauses_copy):
+                return False
+            clauses_copy = clauses_copy.union(new)
 
 
 class MazeKnowledgeBaseTests(unittest.TestCase):
@@ -68,14 +57,14 @@ class MazeKnowledgeBaseTests(unittest.TestCase):
         kb.tell(MazeClause([(("X", (1, 1)), True), (("Y", (1, 1)), True)]))
         self.assertTrue(kb.ask(MazeClause([(("Y", (1, 1)), True)])))
 
-    # def test_mazekb3(self):
-    #     kb = MazeKnowledgeBase()
-    #     kb.tell(MazeClause([(("X", (1, 1)), False), (("Y", (1, 1)), True)]))
-    #     kb.tell(MazeClause([(("Y", (1, 1)), False), (("Z", (1, 1)), True)]))
-    #     kb.tell(MazeClause([(("W", (1, 1)), True), (("Z", (1, 1)), False)]))
-    #     kb.tell(MazeClause([(("X", (1, 1)), True)]))
-    #     self.assertTrue(kb.ask(MazeClause([(("W", (1, 1)), True)])))
-    #     self.assertFalse(kb.ask(MazeClause([(("Y", (1, 1)), False)])))
+    def test_mazekb3(self):
+        kb = MazeKnowledgeBase()
+        kb.tell(MazeClause([(("X", (1, 1)), False), (("Y", (1, 1)), True)]))
+        kb.tell(MazeClause([(("Y", (1, 1)), False), (("Z", (1, 1)), True)]))
+        kb.tell(MazeClause([(("W", (1, 1)), True), (("Z", (1, 1)), False)]))
+        kb.tell(MazeClause([(("X", (1, 1)), True)]))
+        self.assertTrue(kb.ask(MazeClause([(("W", (1, 1)), True)])))
+        self.assertFalse(kb.ask(MazeClause([(("Y", (1, 1)), False)])))
 
     def test_mazekb4(self):
         kb = MazeKnowledgeBase()
