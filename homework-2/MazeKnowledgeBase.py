@@ -29,23 +29,38 @@ class MazeKnowledgeBase:
             self.clauses.add(MazeClause([(mazeProposition, not negationStatus)]))
         for i in self.clauses:
             print(i)
+        print('-----------------------')
         new = set()
         while(True):
             pairs_iterator = combinations(self.clauses, 2)
             for ci, cj in pairs_iterator:
                 resolvents = MazeClause.resolve(ci, cj)
+                print('C1:')
+                print(ci)
+                print('C2:')
+                print(cj)
+                print("Resolvents:")
+                if not any(resolvents): print('resolvents is empty')
+                for i in resolvents:
+                    print(i)
                 if MazeClause([]) in resolvents:
                     return True
-                new.union(resolvents)
-            if new.issubset(self.clauses):
-                return False
-            self.clauses.union(new)
+                new = new.union(resolvents)
+                print("Printing new")
+                for i in new:
+                    print(i)
+            if new.issubset(self.clauses): return False
+            self.clauses = self.clauses.union(new)
+            print("Union of clauses")
+            for i in self.clauses:
+                print(i)
+
 
 class MazeKnowledgeBaseTests(unittest.TestCase):
     # def test_mazekb1(self):
-        # kb = MazeKnowledgeBase()
-        # kb.tell(MazeClause([(("X", (1, 1)), True)]))
-        # self.assertTrue(kb.ask(MazeClause([(("X", (1, 1)), True)])))
+    #     kb = MazeKnowledgeBase()
+    #     kb.tell(MazeClause([(("X", (1, 1)), True)]))
+    #     self.assertTrue(kb.ask(MazeClause([(("X", (1, 1)), True)])))
 
     def test_mazekb2(self):
         kb = MazeKnowledgeBase()
