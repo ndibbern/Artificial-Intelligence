@@ -33,7 +33,7 @@ class MazeClause:
         return self.valid
 
     def isEmpty(self):
-        return not any(self.props)
+        return not any(self.props) and not self.isValid()
 
     def __eq__(self, other):
         return self.props == other.props and self.valid == other.valid
