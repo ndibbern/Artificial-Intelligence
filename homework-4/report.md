@@ -1,5 +1,9 @@
 # AI- HW 4:
 
+## I. Bayesian Network Modeling
+
+### Part 1
+
 Search algorithm graph:
 
 ![Screen Shot 2018-04-06 at 5.17.15 PM](/Users/ndibbern/Desktop/Screen Shot 2018-04-06 at 5.17.15 PM.png)
@@ -44,3 +48,10 @@ Graph after I fix the undirected edges:
 
 ![Screen Shot 2018-04-06 at 5.16.56 PM](/Users/ndibbern/Desktop/Screen Shot 2018-04-06 at 5.16.56 PM.png)
 
+
+
+### Part II
+
+
+
+## II. Naive Bayes Classification (NBC)
