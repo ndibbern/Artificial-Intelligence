@@ -37,7 +37,7 @@ v = ConditionalProbabilityTable(
          [ '0', '1', '1', 0.5 ],
          [ '1', '0', '1', 0.2 ],
          [ '1', '1', '1', 0.4 ]],
-         [g, i] )
+         [i, g] )
 
 s_a = State( a, name="A" )
 s_p = State( p, name="P" )
@@ -95,17 +95,17 @@ v_distribution = model.predict_proba({'I':'0','G':'1'})[-1]
 v_probabilities = v_distribution.parameters[0]
 print(v_probabilities)
 
-# I win -> DONT target
+# I win -> DONT target (1)
 v_distribution = model.predict_proba({'A':'0','P':'1','I':'0','D':'0','G':'0'})[-1]
 v_probabilities = v_distribution.parameters[0]
 print(v_probabilities)
 
-# I ALMOST WIN -> target
+# oponent wins -> target (0)
 v_distribution = model.predict_proba({'A':'0','P':'1','I':'1','D':'1','G':'0'})[-1]
 v_probabilities = v_distribution.parameters[0]
 print(v_probabilities)
 
-# oponent wins -> target
+# I ALMOST WIN -> target (0 or 1 equal chance)
 v_distribution = model.predict_proba({'A':'1','P':'0','I':'0','D':'0','G':'1'})[-1]
 v_probabilities = v_distribution.parameters[0]
 print(v_probabilities)
@@ -113,12 +113,12 @@ print(v_probabilities)
 '''
 RESULTS FOR BN:
 
-{'0': 0.5309999999999999, '1': 0.469}
-{'0': 0.455, '1': 0.545}
-{'0': 0.3000000000000001, '1': 0.6999999999999998}
-{'0': 0.7999999999999999, '1': 0.20000000000000015}
-{'0': 0.3000000000000001, '1': 0.6999999999999998} 1
-{'0': 0.5, '1': 0.5}                               0
-{'0': 0.7999999999999999, '1': 0.20000000000000015}0
+{'1': 0.35650000000000015, '0': 0.6434999999999998}
+{'1': 0.31250000000000017, '0': 0.6875}
+{'1': 0.6999999999999998, '0': 0.3000000000000001}
+{'1': 0.5, '0': 0.5}
+{'1': 0.6999999999999998, '0': 0.3000000000000001}
+{'1': 0.20000000000000015, '0': 0.7999999999999999}
+{'1': 0.5, '0': 0.5}
 
 '''
