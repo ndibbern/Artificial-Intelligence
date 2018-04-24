@@ -14,9 +14,13 @@ Graph after I fix the undirected edges:
 
 #### Answers:
 
-1. Because for both of this cases no sink is created or destroyed depending on the direction of the edge (only changes from fork to chain if it even changes), hence both directions of this edge make it equivalent.
+1. ###### Explain, using the theory behind BN structures, why the search algorithm was able to orient some edges but not others. Reference the graph you found above.
 
-2. I oriented `P -> I` because I assume that your opinion on immigration is an effect from your political inclination (just based on basic knowledge). Furthermore, since we have `P->D` being a similar issue to that of immigration then we need  `P -> I`  for the model to be consistent logically.
+   Because for both of this cases no sink is created or destroyed depending on the direction of the edge (only changes from fork to chain if it even changes), hence both directions of this edge make it equivalent.
+
+2. ###### Explain your choices for network structure that you made above -- why did you orient the ambiguous edges the way that you did?
+
+   I oriented `P -> I` because I assume that your opinion on immigration is an effect from your political inclination (just based on basic knowledge). Furthermore, since we have `P->D` being a similar issue to that of immigration then we need  `P -> I`  for the model to be consistent logically.
 
    I oriented `A->G` because it makes no sense that your position on gun control determines something about your age group.
 
@@ -24,7 +28,12 @@ Graph after I fix the undirected edges:
 
 ### Part II
 1. Probability that I win the campaing is of:` 37.3%`. My opponent is charted to win the congressional seat by a margin of roughly `25.4%` ( see exact results from script).
-2. I think it is ethical as long as the participants on the survey knew that their information (eventhough it is anonymous) know that such information was going to be released to the public. I personally think that there are pros and cons to machine learning and technology, some people only want the pros, which are having all these cool services for free, but they don't realize that that comes to the cost that these firms are using your data to create such services. If you don't accept that then you shouldn't be using such services or answering surveys about your poitical affiliation. Now if they say these data shold not be released to the public and then it is, then there I think it is not ethical.
+
+2. ###### In a small paragraph, argue for whether or not you believe this practice should be considered ethical, especially if each individual's characteristics were collected via social media. Compare this practice to targetted consumerist advertising wherein ads are curated based on perceived interests.
+
+   I think it is ethical as long as the participants on the survey knew that their information (eventhough it is anonymous) was going to be released to the public. I personally think that there are pros and cons to machine learning and technology. Some people only want the pros, which are having all these cool services for free, but they don't realize that that comes to the cost that these firms are using your data to create such services. If you don't accept that then you shouldn't be using such services or answering surveys about your poitical affiliation. Now if they say these data was not going to be released to the public but then they do so anyways, then there I think it is not ethical. 
+
+   In regards to comparison between consumerist addvertising, I feel like this is the exact same thing. Such ads work in the way that companies like Google or Facebook use your data to recommend you things you may like. I see no difference when it comes to political campaigns. As I mentioned before, if you are against one (aka political campaings using such informaiton) then you should be against all ML services.
 
 ##### RESULTS FOR BN:  (in the order that they were given):
 
@@ -47,8 +56,6 @@ Graph after I fix the undirected edges:
 {'1': 0.20000000000000015, '0': 0.7999999999999999} -> Opponent wins -> TARGET
 {'1': 0.5, '0': 0.5}                                -> 50/50 each -> TARGET (not priority)
 ```
-
-I believe it is at the same level as normal propaganda. FINISH
 
 ## II. Naive Bayes Classification (NBC)
 
@@ -82,7 +89,7 @@ P(V | A=1,P=0,I=0,D=0,G=1)
 
 1. ###### Between your BN and NBC, did any of your queries return different probability values? If so, explain why this difference is witnessed, and answer: which one will be more accurate for inference queries?
 
-   All queries gave different probabilitie values, though the last query is very similar for both. The reason for this is explained bellow.
+   All queries gave different probability values, though the last query is very similar for both. The reason for this is explained bellow.
 
    BN creates a better model in comparison to reality, hence it is more accurate.  NBC is called "naive" because it assumes independence on all features, hence less accurate. Furthermore, on NBC we label one variable the class variable, and all the rest are childrens of it. As a consequence  queries are really limited around that interpretation. Because of these two reasons, we see different probability values for our two models when tested on the same queries. Its important to mention that even though NBC is less accurate for inference queries it still succeeds in classifying and works good for smaller datasets.
 
@@ -90,8 +97,8 @@ P(V | A=1,P=0,I=0,D=0,G=1)
 
    Yes, queries such as the following:
 
-   1) `P(A =1)`
-   2) `P(I =0)`
+   1) `P(A=1)`
+   2) `P(I=0)`
    3) `P(D=1| P=1, A=1)`
 
    (Basically all queries that do not involve wanting to know something about V (the class variable)).
@@ -100,19 +107,7 @@ P(V | A=1,P=0,I=0,D=0,G=1)
 
 3. ###### Between your BN and NBC, did any of your queries (despite possibly different probability values) provide a different determination for an individual's predicted voting predilection (V)? For example, did your BN say an individual with some features would vote for your opponent, but your NBC said that same individual would vote for your candidate? If there are differences, answer: which one should you follow if you want to maximize your canvassing efficacy? Provide some proof from the data to back up this claim, assuming that the data is representative of your congressional district.
 
-   No, they all agree on the determination of it. However, if you see BN Has "stronger" probability values. What I mean by this is that if you look at the first query for example where we want to calculate `P(V | A=0,P=1,I=0,D=0,G=0)`, BN tells us that the I win with a probability of roughly `70%` wereas NBC tells us that I win with a probability of roughly `53%`, hence NBC has a "stronger" opinion on the decition target/not target. If we look at the data and look for the values that satisfy the query above (that is, `A=0,P=1,I=0,D=0,G=0` ) we get that roughly `70%` of the values on the data that match these queries had a value of `V=1`, this means that NB result allingns with the values on our dataset
-
-   **query 1**
-
-   1: 303 ->  `70%`
-
-   0: 131 -> `30%`
-
-   **query 2**
-
-   1: 825 -> `20%`
-
-   0: 3372 -> `80%`
+   The first two agree, but the last one does not. Lets discuss this last query more in detail. As you can see BN shows us that there is a `50%` chance to lose and hence a `%50` change to lose. However, if you look at the results for NBC, it states that we win by `63%` . This means that NBC has a "stronger" opinion on targeting vs not targeting than that of BN.  However, if we look at the data we can see that for that specific query we get the following
 
    **query 3**
 
@@ -120,30 +115,12 @@ P(V | A=1,P=0,I=0,D=0,G=1)
 
    0: 969 -> `50%`
 
+   This means that from the data we have that `50%` of the people with this query specifications will vote for me and `50%` will not. Hence, we can see how BN did a better job at modeling such inference query (since probability value relates more to reality). This might be because NBC is too simplified in the relationship model (same thing that we discussed on answer to 1).
+
 4. ###### In a paragraph, make a comparative argument for the pros and cons of BNs vs. NBCs on both inference and classification tasks.
 
-   Look at answer one, I basically say it there.
+BN are necessary to perform general inference tasks, whereas NBC fails to perform them. This is because NBC can only make inference on probabilities regarding the class variable. Furthermore, NBC assumes independence between all features which might not be true in reality hence give worst results for inference queries. BN does not assume independence, hence turns out to be more representative of reality in some cases (because it can model these relationships). Also because of the model that NBC has, that is 1 variable being parent of all the rest, this makes it very limited to represent reality. It is important to note that BN has the overhead of using Tetrad, which is incovenient, however, this tool allows us to determine better relationships when there are a lot of variables.
 
-   In summary:
+On the other hand, eventhougn NBC may not be as accurate as BN in regards to inference queries, it is a simple and elegant model that still succeeds at classifying. NBC has the advantage that it depends solely on the data and it works well even for small datasets .
 
-   NBC Pros:
-
-   * Good for classification
-   * Good for small dataset
-
-   NBC Cons:
-
-   * Because it is modeled as: 1 variable being parent of all the rest, this makes it very limited to represent reality
-   * Assumes independence between all features which might not be true in reality hence give worst results for inference queries
-   * Fail to perform general inference tasks (can only make inference on probabilities regarding the class variable)
-
-   NB Pros:
-
-   * Necessary to perform general inference tasks
-   * Accurate probability values for inference queries when the model you input to NB is accurate.
-
-   NB Cons:
-
-   * Depends a lot on the model that you input and not on the data itself.
-
-If you use a top down approach to BN structure (know all relationships between the variables and ahead of time) then its a good model, however if you don't know the model a priori, then NBC is better because it still succeeds in classifying the queries correctly and it depends on the data solely (and as I mentioned before it is good for small datasets).
+(Also refer to number one, more information is provided there)
