@@ -80,7 +80,7 @@ v_distribution = model.predict_proba({'A':'1'})[-1]
 v_probabilities = v_distribution.parameters[0]
 print(v_probabilities)
 
-# I win -> DONT target
+# oponent wins -> target
 v_distribution = model.predict_proba({'G':'0'})[-1]
 v_probabilities = v_distribution.parameters[0]
 print(v_probabilities)
@@ -90,7 +90,7 @@ v_distribution = model.predict_proba({'G':'0','I':'0'})[-1]
 v_probabilities = v_distribution.parameters[0]
 print(v_probabilities)
 
-# oponent wins -> target
+# 50/50 each -> TARGET (not priority)
 v_distribution = model.predict_proba({'I':'0','G':'1'})[-1]
 v_probabilities = v_distribution.parameters[0]
 print(v_probabilities)
